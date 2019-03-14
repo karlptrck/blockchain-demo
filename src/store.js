@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Block from './models/Block.js'
-import moment from 'moment'
+import Utils from './utils.js'
+// import moment from 'moment'
 
 Vue.use(Vuex)
+var utils = new Utils()
 
 export default new Vuex.Store({
     state : {
@@ -22,10 +24,10 @@ export default new Vuex.Store({
             var latestBlock = getters.getLatestBlock
             var nextIndex = latestBlock.index + 1
             var prevHash = latestBlock.hash
-
-            var timestamp = moment(new Date().getTime()).format('MMMM Do YYYY, h:mm:ss a')
-            var nextHash = "next hash"
-
+            var nonce = 0
+            var timestamp = new Date().getTime()
+            
+            var nextHash = utils.hash(nextIndex, prevHash, timestamp, payload, nonce)
             return new Block(nextIndex, prevHash, timestamp, payload, nextHash, 0)
         }
     }
