@@ -1,5 +1,3 @@
-
-// import moment from 'moment'
 import Utils from '../utils.js'
 var utils = new Utils()
 

@@ -7,6 +7,9 @@
 <script>
 export default {
     name : 'Blockchain', 
+    beforeCreate() {
+        this.$store.commit('createGenesisBlock')
+    }
 }
 </script>
 

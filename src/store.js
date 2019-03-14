@@ -9,11 +9,17 @@ var utils = new Utils()
 
 export default new Vuex.Store({
     state : {
-        blockchain : [Block.createGenesis]
+        blockchain : []
     },
     mutations : {
+        createGenesisBlock(state){
+            state.blockchain.push(Block.createGenesis)
+        },
         addBlock(state, payload){
             state.blockchain.push(payload)
+        },
+        emptyBlockchain(state){
+            state.blockchain = []
         }
     },
     getters : {
