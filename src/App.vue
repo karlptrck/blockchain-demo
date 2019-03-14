@@ -1,17 +1,32 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+     <b-row>
+        <b-col></b-col>
+        <b-col cols="5">
+            <Blockchain></Blockchain>
+            <Block></Block>
+            <AddBlock></AddBlock>
+        </b-col>
+        <b-col>
+            <ResetBlockchain></ResetBlockchain>
+        </b-col>
+      </b-row>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Blockchain from './components/Blockchain'
+import Block from './components/Block'
+import AddBlock from './components/AddBlock'
+import ResetBlockchain from './components/ResetBlockchain'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Blockchain,
+    Block,
+    AddBlock,
+    ResetBlockchain
   }
 }
 </script>
