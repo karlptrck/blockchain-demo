@@ -6,7 +6,7 @@
                     <b-input id="data" placeholder="" v-model="inputData" />
                 </b-input-group>
                 <br>
-                <b-button type="submit" variant="primary">+ Add New Block</b-button>
+                <b-button type="submit" variant="primary"><i class="fas fa-plus-circle"></i>  New Block</b-button>
             </b-form>
         </b-card>
     </div>

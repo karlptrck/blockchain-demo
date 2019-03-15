@@ -40,6 +40,9 @@ export default new Vuex.Store({
     getters : {
         getLatestBlock : state => {
             return state.blockchain[state.blockchain.length -1]
+        },
+        isValidBlock : state => (block) => {
+            return utils.verifyBlock(block)
         }
     },
     actions : {
@@ -64,6 +67,22 @@ export default new Vuex.Store({
             }
 
            createBlock()
+        },
+        revalidateBlock({ state }, payload){
+            const revalidateBlock = async () => {
+                var validatedBlock = await utils.createBlock(payload.timestamp, 
+                                                payload.previousHash, 
+                                                payload.data, 
+                                                payload.index)
+            
+                state.blockchain.splice(payload.index, 1, validatedBlock)
+          
+                for(let i = payload.index + 1; i < state.blockchain.length; i++){
+                    state.blockchain[i].previousHash = state.blockchain[i - 1].hash
+                }
+            
+            }
+            revalidateBlock()
         }
     }
 })

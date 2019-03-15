@@ -41,6 +41,19 @@ export default class Utils{
       return nonce
      }
 
+     verifyBlock(block){
+       var blockWithoutHash = {
+          timestamp: block.timestamp,
+          data: block.data,
+          previousHash: block.previousHash,
+          index: block.index,
+          nonce : block.nonce
+       }
+
+       var hash = this.hashBlock(blockWithoutHash)
+       return hash === block.hash
+     }
+
      getLeadingZeros(){
        var result = ""
        for(let i = 0; i < this.difficulty; i++){
