@@ -10,7 +10,7 @@ export default {
     methods : {
         reset(){
             this.$store.commit('emptyBlockchain')
-            this.$store.commit('createGenesisBlock')
+            this.$store.dispatch('createBlockAndAddToChain', 'Welcome to Blockchain Demo!')
         }
     }
 }

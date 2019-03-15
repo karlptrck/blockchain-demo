@@ -2,39 +2,57 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Block from './models/Block.js'
 import Utils from './utils.js'
-// import moment from 'moment'
 
 Vue.use(Vuex)
-var utils = new Utils()
+let utils = new Utils(3)
 
 export default new Vuex.Store({
     state : {
-        blockchain : []
+        blockchain : [],
+        difficulty : 3, // default
+        mining : false
     },
     mutations : {
-        createGenesisBlock(state){
-            state.blockchain.push(Block.createGenesis)
-        },
         addBlock(state, payload){
             state.blockchain.push(payload)
         },
         emptyBlockchain(state){
             state.blockchain = []
+        },
+        setDifficulty(state, payload){
+            state.difficulty = payload
+        },
+        setMining(state){
+            state.mining = true
         }
     },
     getters : {
         getLatestBlock : state => {
             return state.blockchain[state.blockchain.length -1]
-        },
-        generateNextBlock : (state, getters) => (payload) => {
-            var latestBlock = getters.getLatestBlock
-            var nextIndex = latestBlock.index + 1
-            var prevHash = latestBlock.hash
-            var nonce = 0
-            var timestamp = new Date().getTime()
-            
-            var nextHash = utils.hash(nextIndex, prevHash, timestamp, payload, nonce)
-            return new Block(nextIndex, prevHash, timestamp, payload, nextHash, 0)
+        }
+    },
+    actions : {
+        createBlockAndAddToChain({ commit, state, getters }, payload){
+            commit('setMining', true)
+        
+            const createBlock = async () => {
+                let prevHash = ""
+                let index = 0
+                // eslint-disable-next-line no-console
+                console.log('mining')
+                if(state.blockchain.length != 0){
+                    prevHash = getters.getLatestBlock.hash
+                    index = getters.getLatestBlock.index + 1
+                }
+    
+                let newBlock = await utils.createBlock(new Date(), prevHash, payload, index)
+                commit('addBlock', newBlock)
+                commit('setMining', false)
+                 // eslint-disable-next-line no-console
+                 console.log('done mining ' + newBlock.hash)
+            }
+
+           createBlock()
         }
     }
 })

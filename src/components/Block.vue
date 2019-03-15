@@ -7,7 +7,7 @@
             <br>
             <b-card-text class="text-left">PREVIOUS HASH <span> {{item.previousHash}}</span></b-card-text> 
             <b-card-text class="text-left">HASH <span> {{item.hash}}</span></b-card-text>
-            <b-card-text class="text-left">{{item.index}} <span> {{item.timestamp}} </span></b-card-text>
+            <b-card-text class="text-left">{{item.index}} <span> {{item.timestamp}} </span> <span style="float:right;">{{item.nonce}}</span></b-card-text>
         </b-card>
     </div>
 </template>

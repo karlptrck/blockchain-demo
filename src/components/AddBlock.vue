@@ -23,8 +23,7 @@ export default {
     methods : {
         onSubmit(e) {
             e.preventDefault()
-            var newBlock = this.$store.getters.generateNextBlock(this.inputData)
-            this.$store.commit('addBlock', newBlock)
+            this.$store.dispatch('createBlockAndAddToChain', this.inputData)
         }
 
     }   

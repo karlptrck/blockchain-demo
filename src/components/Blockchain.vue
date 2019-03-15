@@ -8,7 +8,7 @@
 export default {
     name : 'Blockchain', 
     beforeCreate() {
-        this.$store.commit('createGenesisBlock')
+        this.$store.dispatch('createBlockAndAddToChain', 'Welcome to Blockchain Demo!')
     }
 }
 </script>
