@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Block from './models/Block.js'
 import Utils from './utils.js'
 
 Vue.use(Vuex)
@@ -24,6 +23,18 @@ export default new Vuex.Store({
         },
         setMining(state){
             state.mining = true
+        },
+        modifyData(state, payload){
+            var blockToModify = state.blockchain[payload.index]
+            blockToModify["data"] = payload.data
+           
+            let newHashValue = utils.hashBlock(blockToModify)
+            state.blockchain[payload.index]["hash"] = newHashValue
+
+            for(let i = payload.index + 1; i < state.blockchain.length; i++){
+                state.blockchain[i].previousHash = state.blockchain[i - 1].hash
+                state.blockchain[i].hash = utils.hashBlock(state.blockchain[i])
+            }
         }
     },
     getters : {
