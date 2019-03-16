@@ -58,7 +58,7 @@ export default new Vuex.Store({
                     index = getters.getLatestBlock.index + 1
                 }
     
-                let newBlock = await utils.createBlock(new Date(), prevHash, payload, index)
+                let newBlock = await utils.createBlock(new Date().toLocaleString(), prevHash, payload, index)
                 commit('addBlock', newBlock)
                 commit('setMining', false)
                  // eslint-disable-next-line no-console

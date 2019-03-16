@@ -24,6 +24,7 @@ export default {
         onSubmit(e) {
             e.preventDefault()
             this.$store.dispatch('createBlockAndAddToChain', this.inputData)
+            this.inputData = ''
         }
 
     }   

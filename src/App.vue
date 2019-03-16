@@ -3,9 +3,9 @@
      <b-row>
         <b-col></b-col>
         <b-col cols="5">
-            <Blockchain></Blockchain>
+            <Blockchain class="mb-5"></Blockchain>
             <Block></Block>
-            <AddBlock></AddBlock>
+            <AddBlock class="mb-5"></AddBlock>
         </b-col>
         <b-col>
             <ResetBlockchain></ResetBlockchain>

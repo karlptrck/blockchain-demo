@@ -1,6 +1,6 @@
 <template>
      <div class="Blockchain">
-        <h1>Blockchain Demo</h1>
+        <h1>BLOCKCHAIN</h1>
      </div>
 </template>
 
