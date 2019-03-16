@@ -33,8 +33,13 @@
                     <span> <small>  on {{item.timestamp}} </small></span> 
                     <span v-if="isValidBlock(item)" style="float:right;">{{item.nonce}}</span>
                     <span v-else style="float:right;">
-                        <b-button v-b-popover.hover.right="'Re-mine block!'" v-on:click="revalidateBlock(item)" variant="primary">
-                            <i class="fas fa-cogs"></i>
+                        <b-button v-b-popover.hover.right="'Re-mine block!'" 
+                            v-on:click="revalidateBlock(item)" 
+                            :disabled="isRevalidationInProgress(item.index)"
+                            variant="primary">
+
+                            <i v-if="!isRevalidationInProgress(item.index)" class="fas fa-cogs"></i>
+                            <span v-else>Re-validating...</span>
                         </b-button>
                     </span>
                 </b-card-text>
@@ -65,6 +70,9 @@ export default {
         },
         getPreviousBlock(index){
             return this.$store.getters.getPreviousBlock(index)
+        },
+        isRevalidationInProgress(index){
+            return this.$store.state.revalidatingInProgress.includes(index)
         }
 
     }

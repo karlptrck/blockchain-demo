@@ -10,7 +10,8 @@ export default new Vuex.Store({
     state : {
         blockchain : [],
         difficulty : 4,
-        mining : false
+        mining : false,
+        revalidatingInProgress : []
     },
     mutations : {
         addBlock(state, payload){
@@ -83,6 +84,7 @@ export default new Vuex.Store({
         revalidateBlock({ commit, state }, payload){
 
             var miner = new BlockMiner();
+            state.revalidatingInProgress.push(payload.index)
 
             miner.postMessage(JSON.stringify({
                 timestamp : payload.timestamp,
@@ -93,8 +95,10 @@ export default new Vuex.Store({
             }))
 
             miner.onmessage = function(event){
-                state.blockchain.splice(payload.index, 1, event.data)
+                state.revalidatingInProgress = state.revalidatingInProgress.filter(item => item !== payload.index)
 
+                state.blockchain.splice(payload.index, 1, event.data)
+                
                 for(let i = payload.index + 1; i < state.blockchain.length; i++){
                     state.blockchain[i].previousHash = state.blockchain[i - 1].hash
                 }
