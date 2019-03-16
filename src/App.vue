@@ -3,9 +3,7 @@
      <b-row>
         <b-col></b-col>
         <b-col cols="5">
-            <Blockchain class="mb-5"></Blockchain>
-            <Block></Block>
-            <AddBlock class="mb-5"></AddBlock>
+            <Blockchain></Blockchain>
         </b-col>
         <b-col>
             <ResetBlockchain></ResetBlockchain>
@@ -16,16 +14,12 @@
 
 <script>
 import Blockchain from './components/Blockchain'
-import Block from './components/Block'
-import AddBlock from './components/AddBlock'
 import ResetBlockchain from './components/ResetBlockchain'
 
 export default {
   name: 'app',
   components: {
     Blockchain,
-    Block,
-    AddBlock,
     ResetBlockchain
   }
 }

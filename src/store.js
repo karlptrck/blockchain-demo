@@ -42,6 +42,9 @@ export default new Vuex.Store({
         },
         isValidBlock : state => (block) => {
             return utils.verifyBlock(block)
+        },
+        getPreviousBlock : state => (index) => {
+            return state.blockchain[index - 1]
         }
     },
     actions : {
@@ -51,8 +54,7 @@ export default new Vuex.Store({
             const createBlock = async () => {
                 let prevHash = ""
                 let index = 0
-                // eslint-disable-next-line no-console
-                console.log('mining')
+
                 if(state.blockchain.length != 0){
                     prevHash = getters.getLatestBlock.hash
                     index = getters.getLatestBlock.index + 1
@@ -61,8 +63,7 @@ export default new Vuex.Store({
                 let newBlock = await utils.createBlock(new Date().toLocaleString(), prevHash, payload, index)
                 commit('addBlock', newBlock)
                 commit('setMining', false)
-                 // eslint-disable-next-line no-console
-                 console.log('done mining ' + newBlock.hash)
+
             }
 
            createBlock()
