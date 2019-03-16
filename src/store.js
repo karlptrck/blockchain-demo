@@ -3,12 +3,11 @@ import Vuex from 'vuex'
 import Utils from './utils.js'
 
 Vue.use(Vuex)
-let utils = new Utils(3)
+let utils = new Utils()
 
 export default new Vuex.Store({
     state : {
         blockchain : [],
-        difficulty : 3, // default
         mining : false
     },
     mutations : {
@@ -19,7 +18,7 @@ export default new Vuex.Store({
             state.blockchain = []
         },
         setDifficulty(state, payload){
-            state.difficulty = payload
+            utils.setDifficulty(payload)
         },
         setMining(state){
             state.mining = true

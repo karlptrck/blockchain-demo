@@ -6,10 +6,15 @@
             </b-input-group>
             <br>
             <b-card-text class="text-left">PREVIOUS HASH <span> {{item.previousHash}}</span></b-card-text> 
-            <b-card-text class="text-left">HASH <span v-bind:class="{'text-danger' : !isValidBlock(item)}"> {{item.hash}}</span></b-card-text>
+            
+            <b-card-text class="text-left">HASH 
+                <span v-if="!isValidBlock(item)"> <b-alert show variant="danger">{{item.hash}}</b-alert></span>
+                <span v-else><b-alert show variant="success">{{item.hash}}</b-alert></span>
+            </b-card-text>
+            
             <b-card-text class="text-left">{{item.index}} <span> {{item.timestamp}} </span> 
                 <span v-if="isValidBlock(item)" style="float:right;">{{item.nonce}}</span>
-                <span v-else style="float:right;"><b-button v-on:click="revalidateBlock(item)" variant="primary"><i class="fas fa-cogs"></i></b-button></span>
+                <span v-else style="float:right;"><b-button v-b-popover.hover.right="'Re-mine block!'" v-on:click="revalidateBlock(item)" variant="primary"><i class="fas fa-cogs"></i></b-button></span>
             </b-card-text>
         
             

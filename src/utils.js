@@ -1,10 +1,12 @@
 import { ethers } from 'ethers'
 
 export default class Utils{
-    constructor(difficulty){
+    constructor(){}
+    
+    setDifficulty(difficulty){
       this.difficulty = difficulty
     }
-    
+
     createBlock(timestamp, prevHash, data, index){
       return new Promise(resolve => {
           let returnBl = {
