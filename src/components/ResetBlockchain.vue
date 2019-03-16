@@ -28,7 +28,7 @@ export default {
     data(){
         return {
             showDifficulty : false,
-            difficulty : 3 // default
+            difficulty : 4 // default
         }
     },
     methods : {

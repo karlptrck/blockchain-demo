@@ -6,7 +6,12 @@
             v-bind:key="item.index"
             v-bind:item="item"></Block>
 
-        <AddBlock class="mb-5"></AddBlock>
+        <AddBlock v-if="blockchain.length > 0" class="mb-5"></AddBlock>
+        <div v-else>
+            <br>
+            <b-spinner type="grow"/>
+            <div>Mining Genesis Block...</div>
+        </div>
      </div>
 </template>
 
@@ -26,7 +31,7 @@ export default {
         }
     },
     beforeCreate() {
-        this.$store.commit('setDifficulty', 3) // default set to 3
+        this.$store.commit('setDifficulty', 4) // default set to 4
         this.$store.dispatch('createBlockAndAddToChain', 'Welcome to Blockchain Demo!')
     }
 }

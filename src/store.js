@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Utils from './utils.js'
+import BlockMiner from 'worker-loader!./block_miner.js'
 
 Vue.use(Vuex)
 let utils = new Utils()
@@ -8,6 +9,7 @@ let utils = new Utils()
 export default new Vuex.Store({
     state : {
         blockchain : [],
+        difficulty : 4,
         mining : false
     },
     mutations : {
@@ -18,10 +20,10 @@ export default new Vuex.Store({
             state.blockchain = []
         },
         setDifficulty(state, payload){
-            utils.setDifficulty(payload)
+            state.difficulty = payload
         },
-        setMining(state){
-            state.mining = true
+        setMining(state, payload){
+            state.mining = payload
         },
         modifyData(state, payload){
             var blockToModify = state.blockchain[payload.index]
@@ -45,44 +47,61 @@ export default new Vuex.Store({
         },
         getPreviousBlock : state => (index) => {
             return state.blockchain[index - 1]
+        },
+        isMining : state => {
+            return state.mining
         }
     },
     actions : {
         createBlockAndAddToChain({ commit, state, getters }, payload){
             commit('setMining', true)
-        
-            const createBlock = async () => {
-                let prevHash = ""
-                let index = 0
+            var prevHash = ""
+            var index = 0
 
-                if(state.blockchain.length != 0){
-                    prevHash = getters.getLatestBlock.hash
-                    index = getters.getLatestBlock.index + 1
-                }
-    
-                let newBlock = await utils.createBlock(new Date().toLocaleString(), prevHash, payload, index)
-                commit('addBlock', newBlock)
-                commit('setMining', false)
-
+            if(state.blockchain.length != 0){
+                prevHash = getters.getLatestBlock.hash
+                index = getters.getLatestBlock.index + 1
             }
 
-           createBlock()
-        },
-        revalidateBlock({ state }, payload){
-            const revalidateBlock = async () => {
-                var validatedBlock = await utils.createBlock(payload.timestamp, 
-                                                payload.previousHash, 
-                                                payload.data, 
-                                                payload.index)
+            var miner = new BlockMiner();
+
+            miner.postMessage(JSON.stringify({
+                timestamp : new Date().toLocaleString(),
+                prevHash : prevHash,
+                data: payload,
+                index : index,
+                difficulty : state.difficulty
+            }))
             
-                state.blockchain.splice(payload.index, 1, validatedBlock)
-          
+            miner.onmessage = function(event){
+                commit('addBlock', event.data)
+                commit('setMining', false)
+                miner.terminate()
+            }
+
+        },
+        revalidateBlock({ commit, state }, payload){
+
+            var miner = new BlockMiner();
+
+            miner.postMessage(JSON.stringify({
+                timestamp : payload.timestamp,
+                prevHash : payload.previousHash,
+                data: payload.data,
+                index : payload.index,
+                difficulty : state.difficulty
+            }))
+
+            miner.onmessage = function(event){
+                state.blockchain.splice(payload.index, 1, event.data)
+
                 for(let i = payload.index + 1; i < state.blockchain.length; i++){
                     state.blockchain[i].previousHash = state.blockchain[i - 1].hash
                 }
-            
+
+                miner.terminate()
             }
-            revalidateBlock()
+
         }
     }
 })

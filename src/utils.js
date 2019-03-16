@@ -7,22 +7,6 @@ export default class Utils{
       this.difficulty = difficulty
     }
 
-    createBlock(timestamp, prevHash, data, index){
-      return new Promise(resolve => {
-          let returnBl = {
-            timestamp: timestamp,
-            data: data,
-            previousHash: prevHash,
-            index: index
-          }
-          let nonce = this.calculateNonce(returnBl)
-          returnBl["nonce"] = nonce
-          let hash = this.hashBlock(returnBl)
-          returnBl["hash"] = hash
-          resolve(returnBl)
-      })
-    }
-
     hashBlock(blockToHash){
       let stringifiedBl = JSON.stringify(blockToHash)
       let hexifiedBl = this.toHex(stringifiedBl)
