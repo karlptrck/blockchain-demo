@@ -1,5 +1,6 @@
 <template>
     <div class="ResetBlockchain">
+        <p><small>Current Difficulty Level : {{currentDifficulty}}</small></p>
         <b-button class="mb-2" v-on:click="showHideDifficulty" variant="outline-secondary">Reset Blockchain</b-button>
          
         <b-container v-if="showDifficulty">
@@ -29,6 +30,11 @@ export default {
         return {
             showDifficulty : false,
             difficulty : 4 // default
+        }
+    },
+    computed : {
+        currentDifficulty(){
+            return this.$store.state.difficulty
         }
     },
     methods : {
