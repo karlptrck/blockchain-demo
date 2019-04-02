@@ -1,6 +1,6 @@
 # blockchain-demo
 
-Developed by: Karl Patrick Camota
+A simple simulation on how blockchain works.
 
 ### Demo
 Live Demo : https://karlptrck.github.io/blockchain-demo/
